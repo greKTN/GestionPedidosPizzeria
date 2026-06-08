@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {useEffect} from "react";
+import { useCart } from './cartContext'
 
 //Definicion de tipos para las props
 export interface Variant{
@@ -40,6 +41,8 @@ function PizzaCard({pizza}: {pizza: MenuProps}){
             setSelectedVariant(newVariant);
         }
     };
+
+    const {addToCart} = useCart();
     
     //Retorno para mostrar la tarjeta de la pizza, con su imagen, nombre, select para elegir la variante y el precio actualizado segun la elegida
     return (
@@ -71,7 +74,15 @@ function PizzaCard({pizza}: {pizza: MenuProps}){
                     <p className="font-bold text-gray-800">
                         ${Number(selectedVariant.precio).toFixed(2)}
                     </p>
-                    <button className="rounded-full bg-orange-600 text-white text-sm px-4 py-1 hover:bg-orange-700 transition-colors">
+                    <button onClick = {() => addToCart({
+                        id_producto: pizza.id_producto,
+                        id_variante: selectedVariant.id_variante,
+                        nombre: pizza.nombre,
+                        tamano: selectedVariant.tamano,
+                        precio: Number(selectedVariant.precio),
+                        imagen_url: pizza.imagen_url,
+                        cantidad: 1
+                    })} className="rounded-full bg-orange-600 text-white text-sm px-4 py-1 hover:bg-orange-700 transition-colors">
                         Añadir al carrito
                     </button>
                 </div>

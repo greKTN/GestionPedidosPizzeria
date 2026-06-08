@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import {MenuProps, Variant} from './menuCarrousel';
+import { useCart } from './cartContext';
 
 /**
  * nombre de la funcion: PizzaCardWide
@@ -25,6 +26,10 @@ function PizzaCardWide({pizza}: {pizza: MenuProps}){
             setSelectedVariant(newVariant);
         }
     }
+
+    // Contexto del carrito para poder agregar items al carrito desde esta tarjeta
+    const { addToCart } = useCart()
+    
     
     //Retorno para mostrar la tarjeta de la pizza, con su imagen, nombre, select para elegir la variante y el precio actualizado segun la elegida
     return (
@@ -72,7 +77,15 @@ function PizzaCardWide({pizza}: {pizza: MenuProps}){
                         </select>
                     </div>
 
-                    <button className="rounded-full bg-[#f08a5d] text-white text-sm font-semibold px-6 py-2 hover:bg-orange-600 transition-colors shadow-sm whitespace-nowrap">
+                    <button onClick = {() => addToCart({
+                        id_producto: pizza.id_producto,
+                        id_variante: selectedVariant.id_variante,
+                        nombre: pizza.nombre,
+                        tamano: selectedVariant.tamano,
+                        precio: Number(selectedVariant.precio),
+                        imagen_url: pizza.imagen_url,
+                        cantidad: 1
+                    })} className="rounded-full bg-[#f08a5d] text-white text-sm font-semibold px-6 py-2 hover:bg-orange-600 transition-colors shadow-sm whitespace-nowrap">
                         Añadir al carrito
                     </button>
                 </div>
