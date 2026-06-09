@@ -1,5 +1,6 @@
 import {CartItem, useCart} from '../components/cartContext';
 import {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Definición de tipos para las props del submenú y opciones adicionales
 interface SubMenuProps {
@@ -147,6 +148,7 @@ export default function Carrito() {
     const {cartItems, removeFromCart} = useCart();
     const [delivery, setDelivery] = useState(true);
     const [prices, setPrices] = useState<Record<number, number>>({});
+    const navigate = useNavigate();
 
     /**
      * nombre de la funcion: handlePriceChange
@@ -163,6 +165,18 @@ export default function Carrito() {
         const actualPrice = prices[pizza.id_variante] || pizza.precio;
         return acc + actualPrice    
     }, 0);
+
+    //
+    //Funcion que envia la informacion del carrito directamente a los detalles de compra y la facturacion
+    const handleContinuarPagar = () => {
+        navigate('/pagar', { 
+            state: { 
+                total: realTotal, 
+                delivery: delivery, 
+                items: cartItems // <--- Pasamos los productos
+            } 
+        });
+    };
 
     // Retorno de la estructura principal dividida en el panel de pizzas (izq) y el resumen (der)
     return(
@@ -210,8 +224,9 @@ export default function Carrito() {
                     <span>Total:</span>
                     <span>${delivery ? (realTotal + (realTotal * 0.16) + 5.00).toFixed(2) : (realTotal + (realTotal * 0.16)).toFixed(2)}</span>
                 </div>
+                
 
-                <button className="w-full rounded-full bg-[#f08a5d] text-white text-base font-black px-6 py-4 hover:bg-orange-600 transition-all shadow-lg shadow-orange-900/20">
+                <button onClick={handleContinuarPagar} className="w-full rounded-full bg-[#f08a5d] text-white text-base font-black px-6 py-4 hover:bg-orange-600 transition-all shadow-lg shadow-orange-900/20">
                     Continuar a Pagar
                 </button>
             </div>

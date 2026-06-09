@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // @ts-ignore: allow importing image assets without explicit type declarations
 import pizzaPrincipalImg from '../assets/pizza1.png';
@@ -8,25 +9,25 @@ import pizza1Img from '../assets/pizza2.png';
 import pizza2Img from '../assets/pizza3.png';
 
 export default function Landing() {
+    const navigate = useNavigate(); // 2. Inicializamos la función de navegación
 
     return(
-        <div className='min-h-screen bg-zin-950 text-zinc-100 font-sans antialiased selection:bg-[#1e5ca7] selection:text-white pb-12'>
-            {/* Header exclusivo del landing, NOTA: estudiar la posibilidad de hacerlo en un archivo separado reutilizable y dinamico para diversas vistas*/}
+        <div className='min-h-screen bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-[#1e5ca7] selection:text-white pb-12'>
             <header className='sticky top-0 z-50 backdrop-blur-md bg-zinc-950/90 border-b border-zinc-800/80 px-6 py-4 md:px-12 flex items-center justify-between'>
-                <span className='text 2xl font-black tracking-tighter text-white uppercase italic'>
+                <span className='text-2xl font-black tracking-tighter text-white uppercase italic'>
                     🍕 Pizza Panucci's <span className='text-[#1e5ca7]'>.</span>
                 </span>
 
                 <div className='flex items-center gap-4'>
                     <button
-                        onClick={() => console.log('Ir a Login')}
+                        onClick={() => navigate('/login')} // 3. Navegamos a login
                         className='text-sm font-bold tracking-wide text-zinc-100 hover:text-[#1e5ca7] transition-colors uppercase'
                         >
                         Ingresar
                     </button>
                     <button
-                        onClick={() => console.log('Ir a Registro')}
-                        className='rounded-xl bg-[#1e5ca7] px-5 py-2.5 text-sm font-extrabold text-ehite shadow-[0-4px_14px_rgba(30,90,163,0.4)] active:scale-95 uppercase tracking-wider'
+                        onClick={() => navigate('/register')} // 3. Navegamos a register
+                        className='rounded-xl bg-[#1e5ca7] px-5 py-2.5 text-sm font-extrabold text-white shadow-[0-4px_14px_rgba(30,90,163,0.4)] active:scale-95 uppercase tracking-wider'
                         >
                         Unete
                     </button>

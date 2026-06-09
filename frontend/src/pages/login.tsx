@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 // importamos la imagen de la pizza //
 
 // @ts-ignore: allow importing image assets without explicit type declarations
@@ -16,12 +17,24 @@ export default function Login() {
         // Aquí se puede agregar la lógica para autenticar al usuario <---------------------------------- BACKEND AQUI//
         console.log("DATOS A ENVIAR AL BACKEND: ", { email, password });
     };
+    const navigate = useNavigate();
     
     return (
         // contenedor principal: contiene el contenido cetrado y el fondo negro //
         <div className='flex min-h-screen items-center justify-center bg-zinc-950 p-4 font-sans select-none'>
             {/* tarjeta del login */}
             <div className='flex w-full max-w-4xl overflow-hidden rounded-2x1 bg-[#c8d4ef] shadow-2x1 md:flex-row flex-col'>
+
+                <Link 
+                    to="/" 
+                    className="absolute top-6 left-6 z-30 flex items-center gap-2 text-zinc-400 hover:text-white transition-all hover:scale-105 active:scale-95"
+                >
+                    {/* Icono de flecha */}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Volver al inicio
+                </Link>
 
                 {/* columna izquierda: imagen de la pizza*/}
                 <div className='relative hidden w-1/3 bg-[#c8d4ef] p-6 md:flex items-center justify-center overflow-visible'>
@@ -106,9 +119,9 @@ export default function Login() {
                         <div className='mt-4 text-center text-sm text-zinc-600'>
                             ¿No tienes una cuenta? 
                             <button
-                            type='button'
-                            className='font-semibold text-[#1e5aa3] hover:underline hover:text-[#164680] transition-colors'
-                            onClick={() => console.log('Navegar a la vista de registro')}
+                                type='button'
+                                className='font-semibold text-[#1e5aa3] hover:underline...'
+                                onClick={() => navigate('/register')} // Cambia el console.log por esto
                             >
                                 Registrate
                             </button>
