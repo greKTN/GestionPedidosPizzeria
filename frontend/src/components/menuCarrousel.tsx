@@ -1,6 +1,7 @@
-import {useState} from "react";
-import {useEffect} from "react";
+import {useState, useEffect} from "react";
 import { useCart } from './cartContext'
+// @ts-ignore: allow importing image assets without explicit type declarations
+import cabezalImg from '../assets/cabezal-panucci.png'
 
 //Definicion de tipos para las props
 export interface Variant{
@@ -46,19 +47,19 @@ function PizzaCard({pizza}: {pizza: MenuProps}){
     
     //Retorno para mostrar la tarjeta de la pizza, con su imagen, nombre, select para elegir la variante y el precio actualizado segun la elegida
     return (
-        <div className="rounded-xl p-4 bg-white shadow-md h-full flex flex-col justify-between">
+        <div className="rounded-3xl p-5 bg-white shadow-xl h-full flex flex-col justify-between border border-slate-100 transition-all hover:shadow-2xl">
             <div>
                 <img 
                     src={`http://localhost:3000${pizza.imagen_url}`} 
-                    className="w-full h-40 object-cover rounded-xl mb-3" 
+                    className="w-full h-40 object-cover rounded-2xl mb-4" 
                     alt={pizza.nombre}
                 />
-                <h3 className="font-bold text-lg mb-2">{pizza.nombre}</h3>
+                <h3 className="font-black text-slate-800 text-lg mb-1">{pizza.nombre}</h3>
             </div>
             
             <div>
                 <select 
-                    className="w-full mb-3 p-2 bg-gray-50 border border-gray-200 rounded-md text-sm outline-none focus:border-orange-400"
+                    className="w-full mb-4 p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 outline-none focus:border-[#1e5ca7]"
                     value={selectedVariant.id_variante} 
                     onChange={handleChange}
                 >
@@ -71,7 +72,7 @@ function PizzaCard({pizza}: {pizza: MenuProps}){
                 </select>
 
                 <div className="flex justify-between items-center">
-                    <p className="font-bold text-gray-800">
+                    <p className="font-black text-[#1e5ca7] text-lg">
                         ${Number(selectedVariant.precio).toFixed(2)}
                     </p>
                     <button onClick = {() => addToCart({
@@ -82,8 +83,8 @@ function PizzaCard({pizza}: {pizza: MenuProps}){
                         precio: Number(selectedVariant.precio),
                         imagen_url: pizza.imagen_url,
                         cantidad: 1
-                    })} className="rounded-full bg-orange-600 text-white text-sm px-4 py-1 hover:bg-orange-700 transition-colors">
-                        Añadir al carrito
+                    })} className="rounded-full bg-[#1e5ca7] text-white text-sm font-bold px-5 py-2 hover:bg-blue-800 transition-all">
+                        Añadir
                     </button>
                 </div>
             </div>
@@ -163,26 +164,52 @@ export default function MenuCarrousel() {
 
     const completeCarrousel = [...products, ...products.slice(0, 3)];
 
+/**
+     * nombre de la funcion: Header
+     * funcionalidad: Agregué este header con la imagen personalizada, botón de retorno y acceso al carrito para que el usuario pueda navegar fácilmente.
+     */
     return (
-    <div>
-        <h2>Recomendaciones</h2>
-        
-        <div className="overflow-hidden w-full">
-            
-            <div 
-                className={animation ? "flex transition-transform duration-500 ease-out" : "flex"} 
-                style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}
+    <div className="bg-[#1e5ca7]">
+        <header className="relative w-full h-48 bg-zinc-900 border-b-4 border-[#1e5ca7] flex items-center justify-between px-8">
+            <button 
+                onClick={() => window.history.back()} 
+                className="bg-zinc-800 text-white px-4 py-2 rounded-lg font-bold hover:bg-[#1e5ca7] transition-all"
             >
-                {/* mapeo de las pizzas a mostrar en el carrusel, se muestran 3 a la vez, por eso el 33.33% */}
+                ← CERRAR SESION
+            </button>
+            
+            <h1 className="text-white font-black text-2xl md:text-3xl tracking-tighter uppercase italic">
+                Dejate llevar con <span className="text-[#1e5ca7]">la mejor pizza</span>
+            </h1>
+            
+            <button 
+                onClick={() => window.location.href = '/carrito'} 
+                className="bg-[#1e5ca7] text-white px-6 py-2 rounded-lg font-black uppercase hover:bg-blue-700 transition-all flex items-center gap-2"
+            >
+                Carrito 🛒
+            </button>
+        </header>
+
+        <div className="py-12 px-6">
+            <h2 className="text-white font-black text-3xl mb-8 ml-2 uppercase tracking-wide">Recomendaciones</h2>
+            
+            <div className="overflow-hidden w-full max-w-7xl mx-auto">
                 
-                {completeCarrousel.map((pizza, index) => (
+                <div 
+                    className={animation ? "flex transition-transform duration-500 ease-out" : "flex"} 
+                    style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}
+                >
+                    {/* mapeo de las pizzas a mostrar en el carrusel, se muestran 3 a la vez, por eso el 33.33% */}
                     
-                    // El 'key' es obligatorio en React cuando usamos .map() para que no se confunda
-                    <div key={index} className="min-w-[33.33%] p-2 shrink-0">
-                        {/* Invocacion del sub-componente enviandole la info de la pizza */}
-                            <PizzaCard pizza={pizza} />
-                            </div>
-                ))}
+                    {completeCarrousel.map((pizza, index) => (
+                        
+                        // El 'key' es obligatorio en React cuando usamos .map() para que no se confunda
+                        <div key={index} className="min-w-[33.33%] p-3 shrink-0">
+                            {/* Invocacion del sub-componente enviandole la info de la pizza */}
+                                <PizzaCard pizza={pizza} />
+                                </div>
+                    ))}
+                </div>
             </div>
         </div>
     </div>

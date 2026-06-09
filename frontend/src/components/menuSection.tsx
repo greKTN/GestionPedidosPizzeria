@@ -33,9 +33,9 @@ function PizzaCardWide({pizza}: {pizza: MenuProps}){
     
     //Retorno para mostrar la tarjeta de la pizza, con su imagen, nombre, select para elegir la variante y el precio actualizado segun la elegida
     return (
-        <div className="bg-white rounded-xl overflow-hidden shadow-md flex flex-col w-full mb-6 border border-gray-100">
+        <div className="bg-white rounded-3xl overflow-hidden shadow-xl flex flex-col w-full mb-8 border border-slate-100 transition-all hover:shadow-2xl">
             {/* 1. La imagen formato Wide (Banner) */}
-            <div className="w-full h-48 md:h-64">
+            <div className="w-full h-56 md:h-72">
                 <img 
                 /* se coloca en localhost mientras no este desplegado en produccion  */
                     src={`http://localhost:3000${pizza.imagen_url}`} 
@@ -45,18 +45,18 @@ function PizzaCardWide({pizza}: {pizza: MenuProps}){
             </div>
 
             {/* 2. El contenido inferior */}
-            <div className="p-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+            <div className="p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 
                 {/* Lado izquierdo: Textos */}
                 <div className="w-full md:w-2/3">
-                    <h3 className="font-bold text-xl text-gray-900">{pizza.nombre}</h3>
+                    <h3 className="font-black text-2xl text-slate-900">{pizza.nombre}</h3>
                     {/* line-clamp-2 recorta el texto si es muy largo para que no dañe el diseño */}
-                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">{pizza.descripcion}</p>
+                    <p className="text-sm text-slate-500 mt-2 line-clamp-2">{pizza.descripcion}</p>
                     
                     {/* Las estrellitas estáticas por ahora */}
-                    <div className="flex items-center mt-2 text-sm text-gray-600">
-                        <span className="text-gray-800 tracking-widest mr-2">⭐⭐⭐⭐⭐</span> 
-                        <span className="font-semibold">4.7</span>
+                    <div className="flex items-center mt-3 text-sm text-slate-600">
+                        <span className="text-amber-400 mr-2">★★★★★</span> 
+                        <span className="font-bold text-slate-700">4.7</span>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@ function PizzaCardWide({pizza}: {pizza: MenuProps}){
                     
                     <div className="flex flex-col items-end">
                         <select 
-                            className="p-1 mb-1 bg-transparent text-sm outline-none font-semibold text-gray-700 cursor-pointer"
+                            className="p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-[#1e5ca7] outline-none cursor-pointer focus:border-[#1e5ca7]"
                             value={selectedVariant.id_variante} 
                             onChange={handleChange}
                         >
@@ -85,8 +85,8 @@ function PizzaCardWide({pizza}: {pizza: MenuProps}){
                         precio: Number(selectedVariant.precio),
                         imagen_url: pizza.imagen_url,
                         cantidad: 1
-                    })} className="rounded-full bg-[#f08a5d] text-white text-sm font-semibold px-6 py-2 hover:bg-orange-600 transition-colors shadow-sm whitespace-nowrap">
-                        Añadir al carrito
+                    })} className="rounded-full bg-[#1e5ca7] text-white text-sm font-black px-6 py-3 hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20 whitespace-nowrap">
+                        Añadir
                     </button>
                 </div>
             </div>
@@ -127,20 +127,20 @@ export default function MenuSection() {
     //Mnesaje de carga mientras se obtienen las pizzas desde el backend
     if (pizzas.length === 0) {
         return (
-            <div className="bg-[#1a4b8c] w-full py-12 px-4 text-center">
-                <p className="text-white font-bold text-xl">Cargando menú completo... 🍕</p>
+            <div className="bg-[#1e5ca7] w-full py-20 px-4 text-center">
+                <p className="text-white font-black text-xl animate-pulse">Cargando menú completo... 🍕</p>
             </div>
         );
     }
 
     // Retorno para mostrar la seccion del menu, con un titulo y mapear las pizzas obtenidas mostrando cada una con el componnente 'PizzaCardWide'
     return (
-        <div className="bg-[#1a4b8c] w-full py-12 px-4">
+        <div className="bg-[#1e5ca7] w-full py-16 px-4">
             <div className="max-w-5xl mx-auto">
                 
-                <div className="text-center mb-8">
-                    <h2 className="text-4xl font-bold text-white mb-2 tracking-wide">Menú</h2>
-                    <p className="text-blue-200 text-sm">Donde el paladar recibe un amor inigualable</p>
+                <div className="text-center mb-12">
+                    <h2 className="text-5xl font-black text-white mb-3 tracking-tighter">Menú</h2>
+                    <p className="text-blue-100 text-base font-medium">Donde el paladar recibe un amor inigualable</p>
                 </div>
 
                 <div className="flex flex-col">
