@@ -17,17 +17,38 @@ export default function Login() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     
     // manejo del formulario de login //
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-        //validacion basica antes de enviar los datos al backend //
-        if (password !== confirmPassword) {
-            alert("Las contraseñas no coinciden");
-            return;
+    if (password !== confirmPassword) {
+        alert("Las contraseñas no coinciden");
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                nombre: name, 
+                email: email, 
+                password: password, 
+                telefono: '0414-7848740'
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert("¡Registro exitoso!");
+            navigate('/login');
+        } else {
+            alert("Error: " + data.message);
         }
-
-        // Aquí se puede agregar la lógica para autenticar al usuario <---------------------------------- BACKEND AQUI//
-        console.log("DATOS A ENVIAR AL BACKEND: ", { email, password });
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        alert("El servidor no responde, verifica que esté encendido.");
+    }
     };
     const navigate = useNavigate();
 

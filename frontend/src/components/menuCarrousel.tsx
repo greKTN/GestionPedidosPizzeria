@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import { useCart } from './cartContext'
+import { useNavigate } from "react-router-dom";
 // @ts-ignore: allow importing image assets without explicit type declarations
 import cabezalImg from '../assets/cabezal-panucci.png'
 
@@ -103,6 +104,7 @@ export default function MenuCarrousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [products, setProduct] = useState<MenuProps[]>([]);
     const [animation, setAnimation] = useState(true);
+    const navigate = useNavigate();
 
     //efecto para cargar el menu desde el backend al iniciar el componente, guardandolo en el estado 'products'
     useEffect(() => {
@@ -157,6 +159,12 @@ export default function MenuCarrousel() {
     }, [currentIndex, products.length]);
 
 
+    const handleCerrarSesion = () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
+
     // Mnesaje de carga por si el usuario tiene el internet lento, no vea una pantalla en blanco
     if(products.length == 0){
         return <p className="text-center font-bold">Cargando menú... 🍕</p>;
@@ -172,7 +180,7 @@ export default function MenuCarrousel() {
     <div className="bg-[#1e5ca7]">
         <header className="relative w-full h-48 bg-zinc-900 border-b-4 border-[#1e5ca7] flex items-center justify-between px-8">
             <button 
-                onClick={() => window.history.back()} 
+                onClick={handleCerrarSesion} 
                 className="bg-zinc-800 text-white px-4 py-2 rounded-lg font-bold hover:bg-[#1e5ca7] transition-all"
             >
                 ← CERRAR SESION

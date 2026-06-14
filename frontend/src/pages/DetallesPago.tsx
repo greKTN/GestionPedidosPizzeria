@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DATOS_PAGO_MOVIL } from '../constants/pagoInfo';
+import { useCart } from '../components/cartContext';
 
 interface OrdenData {
     id_pedido: number;
@@ -19,6 +20,7 @@ interface OrdenData {
 export default function DetallesPago() {
     const location = useLocation();
     const navigate = useNavigate();
+    const { clearCart } = useCart();
     
     // Acá recupero los datos que envié desde el Carrito. 
     // Si no vienen items, inicializo vacío para no romper nada.
@@ -28,6 +30,7 @@ export default function DetallesPago() {
     const [loading, setLoading] = useState(true);
     const [enviandoPago, setEnviandoPago] = useState(false);
     const [pagoConfirmado, setPagoConfirmado] = useState(false);
+    const [idPedidoRecibido, setIdPedidoRecibido] = useState<number | null>(null);
 
     // Calculo los valores reales antes de setear el estado
     const iva = total * 0.16;
@@ -37,7 +40,7 @@ export default function DetallesPago() {
     useEffect(() => {
         // Validación de seguridad: si no hay total, me largo de acá al menú
         if (total === 0) {
-            navigate('/'); 
+            navigate('/menu'); 
             return;
         }
 
@@ -61,11 +64,49 @@ export default function DetallesPago() {
     const handleReportarPago = async () => {
         if (!orden) return;
         setEnviandoPago(true);
-        
-        setTimeout(() => {
-            setPagoConfirmado(true);
+
+        try{
+            const userStr = localStorage.getItem('user');
+            if(!userStr){
+                alert("Error, debe iniciar sesion para procesar");
+                navigate('/login');
+                return;
+            }
+            const user = JSON.parse(userStr);
+
+            //preparacion del paquete para la API
+            const payload = {
+                id_usuario: user.id,
+                tipo_entrega: orden.tipo_entrega,
+                total: orden.total,
+                items: orden.items
+            }
+
+            const response = await fetch('http://localhost:3000/api/pedidos',{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+
+            const data = await response.json();
+
+            if (response.ok){
+                setIdPedidoRecibido(data.id_pedido); //Se guarda el ID que nos dio la DB
+                 setTimeout(() => {
+                    setPagoConfirmado(true);
+                }, 1000);
+                setPagoConfirmado(true);
+                clearCart(); //se vacia el carrito porque ya se pago
+            } else{
+                alert("Error al procesar: " + data.error);
+            }
+        } catch(error) {
+            console.error("Fallo la conexion: ", error);
+            alert("No se pudo conectar con el servidor");
+        } finally{
             setEnviandoPago(false);
-        }, 1000);
+        }
+        
     };
 
     if (loading) return <div className="min-h-screen bg-slate-50 flex items-center justify-center font-black text-slate-900 animate-pulse">Cargando...</div>;
@@ -141,7 +182,7 @@ export default function DetallesPago() {
                 )}
                 
                 <button 
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/menu')}
                     className="w-full mt-6 text-slate-400 font-black hover:text-slate-900 transition-colors uppercase text-xs tracking-[0.2em]"
                 >
                     Volver al menú

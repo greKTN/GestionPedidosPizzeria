@@ -28,6 +28,7 @@ export function CardItemCard({pizza, removeFromCart, onPriceChange}: SubMenuProp
     const [open, setOpen] = useState(false);
     const [extra, setExtra] = useState<OpcionExtra[]>([]);
     const [selected, setSelected] = useState<OpcionExtra[]>([]);
+    const { updateItemExtras } = useCart();
 
     // Efecto para calcular el precio extra según las opciones seleccionadas y notificar el cambio al componente padre
     useEffect(() => {
@@ -49,6 +50,14 @@ export function CardItemCard({pizza, removeFromCart, onPriceChange}: SubMenuProp
         };
         loadExtras();
     }, [])
+
+    useEffect(() => {
+    const extraPrice = selected.reduce((total, item) => total + Number(item.precio_adicional), 0);
+    const finalPrice = pizza.precio + extraPrice;
+    
+    // Le enviamos al contexto los extras seleccionados y el nuevo precio
+    updateItemExtras(pizza.id_variante, selected, finalPrice);
+        }, [selected]);
 
     // Clasificación de opciones extras separando en arreglos según su categoría
     const borders = extra.filter(i => i.categoria != "Topping");

@@ -7,8 +7,10 @@ export interface CartItem {
     nombre: string;
     tamano: string;
     precio: number;
+    precio_final?: number;
     imagen_url: string;
     cantidad: number;
+    extras?: OpcionExtra[];
 }
 
 interface CartContextType {
@@ -17,9 +19,27 @@ interface CartContextType {
     removeFromCart: (id_variante: number) => void;
     clearCart: () => void;
     totalPrice: number;
+    updateItemExtras: (id_variante: number, extras: OpcionExtra[], nuevoPrecio: number) => void;
+}
+
+export interface OpcionExtra {
+    id_opcion: number;
+    nombre: string;
+    categoria: string;
+    precio_adicional: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+
+//Funcion para obtener la llave unica del carrito
+    const getCartKey = () =>{
+        const userStr = localStorage.getItem('user');
+        if(userStr){
+            const user = JSON.parse(userStr);
+                return `cart_${user.id}`;
+        }
+       return ""
+    }
 
 /**
  * nombre de la funcion: CartProvider
@@ -30,13 +50,17 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({children}: {children: ReactNode}) {
     // Estado local inicializado con los datos de localStorage si existen, de lo contrario un arreglo vacío
     const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-        const storedCart = localStorage.getItem('cart');
+        const key = getCartKey();
+        const storedCart = localStorage.getItem(key);
         return storedCart ? JSON.parse(storedCart) : [];
     });
 
+    
+
     // Efecto para sincronizar el estado del carrito con localStorage cada vez que hay un cambio en cartItems
     useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cartItems));
+        const key = getCartKey();
+        localStorage.setItem(key, JSON.stringify(cartItems));
     }, [cartItems]);
 
     /**
@@ -75,12 +99,23 @@ export function CartProvider({children}: {children: ReactNode}) {
         setCartItems([]);
     }
 
+    const updateItemExtras = (id_variante: number, extras: OpcionExtra[], nuevoPrecio: number) => {
+    setCartItems(prevItems => prevItems.map(item =>
+        item.id_variante === id_variante
+            ? { ...item, extras, precio_final: nuevoPrecio }
+            : item
+        ));
+    };
+
     // Cálculo acumulativo del precio total multiplicando el precio base de cada item por su cantidad
-    const totalPrice = cartItems.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+    const totalPrice = cartItems.reduce((total, item) => {
+    const itemPrice = item.precio_final !== undefined ? item.precio_final : item.precio;
+    return total + (itemPrice * item.cantidad);
+        }, 0);
 
     // Retorno del provider inyectando los valores del contexto
     return (
-        <CartContext.Provider value = {{ cartItems, addToCart, removeFromCart, clearCart, totalPrice }}>
+        <CartContext.Provider value = {{ cartItems, addToCart, removeFromCart, clearCart, totalPrice, updateItemExtras }}>
             {children}
         </CartContext.Provider>
     )
