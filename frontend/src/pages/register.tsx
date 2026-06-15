@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom'
 
 // @ts-ignore: allow importing image assets without explicit type declarations
 import pizzaImage from '../assets/pizza-login.png';
+import { API_URL } from '../constants/api';
 
 export default function Login() {
     // estados para el formulario de login //
@@ -26,7 +27,7 @@ export default function Login() {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/api/register', {
+        const response = await fetch(`${API_URL}/api/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 

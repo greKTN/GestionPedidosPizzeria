@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {MenuProps, Variant} from './menuCarrousel';
 import { useCart } from './cartContext';
+import { API_URL } from '../constants/api';
 
 /**
  * nombre de la funcion: PizzaCardWide
@@ -38,7 +39,7 @@ function PizzaCardWide({pizza}: {pizza: MenuProps}){
             <div className="w-full h-56 md:h-72">
                 <img 
                 /* se coloca en localhost mientras no este desplegado en produccion  */
-                    src={`http://localhost:3000${pizza.imagen_url}`} 
+                    src={`${API_URL}${pizza.imagen_url}`} 
                     className="w-full h-full object-cover" 
                     alt={pizza.nombre}
                 />
@@ -114,7 +115,7 @@ export default function MenuSection() {
          */
         const loadProducts = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/productos');
+                const response = await fetch(`${API_URL}/api/productos`);
                 const data = await response.json();
                 setPizzas(data);
             } catch(error) {

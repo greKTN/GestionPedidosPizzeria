@@ -3,6 +3,7 @@ import { useCart } from './cartContext'
 import { useNavigate } from "react-router-dom";
 // @ts-ignore: allow importing image assets without explicit type declarations
 import cabezalImg from '../assets/cabezal-panucci.png'
+import { API_URL } from "../constants/api";
 
 //Definicion de tipos para las props
 export interface Variant{
@@ -51,7 +52,7 @@ function PizzaCard({pizza}: {pizza: MenuProps}){
         <div className="rounded-3xl p-5 bg-white shadow-xl h-full flex flex-col justify-between border border-slate-100 transition-all hover:shadow-2xl">
             <div>
                 <img 
-                    src={`http://localhost:3000${pizza.imagen_url}`} 
+                    src={`{API_URL}${pizza.imagen_url}`} 
                     className="w-full h-40 object-cover rounded-2xl mb-4" 
                     alt={pizza.nombre}
                 />
@@ -116,7 +117,7 @@ export default function MenuCarrousel() {
          */
         const loadProducts = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/productos');
+                const response = await fetch(`${API_URL}/api/productos`);
                 const data = await response.json();
                 
                 setProduct(data);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DATOS_PAGO_MOVIL } from '../constants/pagoInfo';
 import { useCart } from '../components/cartContext';
+import { API_URL } from '../constants/api';
 
 interface OrdenData {
     id_pedido: number;
@@ -82,7 +83,7 @@ export default function DetallesPago() {
                 items: orden.items
             }
 
-            const response = await fetch('http://localhost:3000/api/pedidos',{
+            const response = await fetch(`${API_URL}/api/pedidos`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -92,7 +93,7 @@ export default function DetallesPago() {
 
             if (response.ok){
                 setIdPedidoRecibido(data.id_pedido); //Se guarda el ID que nos dio la DB
-                 setTimeout(() => {
+                setTimeout(() => {
                     setPagoConfirmado(true);
                 }, 1000);
                 setPagoConfirmado(true);

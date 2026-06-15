@@ -1,6 +1,7 @@
 import {CartItem, useCart} from '../components/cartContext';
 import {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../constants/api';
 
 // Definición de tipos para las props del submenú y opciones adicionales
 interface SubMenuProps {
@@ -40,7 +41,7 @@ export function CardItemCard({pizza, removeFromCart, onPriceChange}: SubMenuProp
     useEffect(() => {
         const loadExtras = async () => {
             try{
-                const response = await fetch('http://localhost:3000/api/opciones');
+                const response = await fetch(`${API_URL}/api/opciones`);
                 const data = await response.json();
                 setExtra(data);
             }
@@ -93,7 +94,7 @@ export function CardItemCard({pizza, removeFromCart, onPriceChange}: SubMenuProp
     return (
         <div className="bg-white rounded-2xl p-5 flex flex-col gap-4 shadow-sm border border-slate-100">
             <div className="flex gap-4">
-                <img src={`http://localhost:3000${pizza.imagen_url}`} alt={pizza.nombre} className="w-24 h-24 rounded-xl object-cover" />
+                <img src={`${API_URL}${pizza.imagen_url}`} alt={pizza.nombre} className="w-24 h-24 rounded-xl object-cover" />
                 
                 <div className="flex-1 flex justify-between items-start">
                     <div>

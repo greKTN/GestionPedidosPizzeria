@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 // importamos la imagen de la pizza //
 
+import { API_URL } from '../constants/api';
+
 // @ts-ignore: allow importing image assets without explicit type declarations
 import pizzaImage from '../assets/pizza-login.png'
 
@@ -15,7 +17,7 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3000/api/login', {
+            const response = await fetch(`${API_URL}/api/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
