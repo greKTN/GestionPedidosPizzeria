@@ -10,9 +10,17 @@ const app = express();
 // Middlewares
 app.use(cors()); // Permite que React se conecte
 app.use(express.json()); // Permite recibir datos en formato JSON (para el carrito)
+// --- CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS PARA RAILWAY ---
+// Creamos una ruta absoluta subiendo dos niveles desde src/config/ hasta la raíz de backend/public
+const publicPath = path.resolve(__dirname, '..', '..', 'public');
 
-// Permite servir archivos estáticos (nuestro bucket local de imágenes)
-app.use(express.static(path.join(__dirname, '../public')));
+// Servimos explícitamente la subcarpeta de imágenes bajo el prefijo /images
+app.use('/images', express.static(path.join(publicPath, 'images')));
+
+// Servimos la carpeta pública general como respaldo
+app.use(express.static(publicPath));
+
+console.log("📂 Servidor buscando imágenes físicamente en:", path.join(publicPath, 'images'));
 
 /**
  * nombre de la funcion: Conexión a PostgreSQL (Instancia de Pool)
