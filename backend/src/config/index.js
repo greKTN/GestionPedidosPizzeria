@@ -12,7 +12,7 @@ app.use(cors()); // Permite que React se conecte
 app.use(express.json()); // Permite recibir datos en formato JSON (para el carrito)
 
 // Permite servir archivos estáticos (nuestro bucket local de imágenes)
-app.use(express.static(path.join(__dirname, '../../public')));
+app.use(express.static(path.join(__dirname, '../public/images')));
 console.log("Ruta estática apuntando a:", path.join(__dirname, '../../public'));
 
 /**
@@ -223,6 +223,6 @@ app.post('/api/pedidos', async (req, res) => {
  * funcionalidad: Abre el puerto especificado en las variables de entorno (o el 3000 por defecto) para empezar a escuchar peticiones HTTP entrantes, mostrando un mensaje de confirmación en la consola.
  */
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
