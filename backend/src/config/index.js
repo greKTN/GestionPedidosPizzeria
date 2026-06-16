@@ -13,6 +13,7 @@ app.use(express.json()); // Permite recibir datos en formato JSON (para el carri
 
 // Permite servir archivos estáticos (nuestro bucket local de imágenes)
 app.use(express.static(path.join(__dirname, '../../public')));
+console.log("Ruta estática apuntando a:", path.join(__dirname, '../../public'));
 
 /**
  * nombre de la funcion: Conexión a PostgreSQL (Instancia de Pool)

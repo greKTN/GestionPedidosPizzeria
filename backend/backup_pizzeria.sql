@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict oxvwwrd4HlO96o1uNyHpzzWGcS55W5S6lm7CtbJgkx6qyWRhqF8Bg5XpcdLUkCI
+
 
 -- Dumped from database version 18.4
 -- Dumped by pg_dump version 18.4
@@ -769,5 +769,4 @@ ALTER TABLE ONLY public.variantes
 -- PostgreSQL database dump complete
 --
 
-\unrestrict oxvwwrd4HlO96o1uNyHpzzWGcS55W5S6lm7CtbJgkx6qyWRhqF8Bg5XpcdLUkCI
 
