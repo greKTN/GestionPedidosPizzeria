@@ -12,16 +12,21 @@ app.use(cors()); // Permite que React se conecte
 app.use(express.json()); // Permite recibir datos en formato JSON (para el carrito)
 
 // --- CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS PARA RAILWAY ---
-// Creamos una ruta absoluta subiendo un nivel desde src/config/ hasta la raíz de backend/public
-const publicPath = path.resolve(__dirname, '..', 'public');
 
-// Servimos explícitamente la subcarpeta de imágenes bajo el prefijo /images
+// --- RUTA ESTÁTICA ABSOLUTA PARA MONORREPO EN RAILWAY ---
+const path = require('path');
+
+// process.cwd() nos da la raíz (/app). Le sumamos 'backend' y 'public'
+const publicPath = path.join(process.cwd(), 'backend', 'public');
+
+// Servimos las imágenes bajo el prefijo /images
 app.use('/images', express.static(path.join(publicPath, 'images')));
 
-// Servimos la carpeta pública general como respaldo
+// Servimos la carpeta general
 app.use(express.static(publicPath));
 
-console.log("📂 Servidor buscando imágenes físicamente en:", path.join(publicPath, 'images'));
+// Esto te imprimirá la ruta real en los logs para confirmar que apunte a /app/backend/public
+console.log("Ruta estática apuntando a:", publicPath);
 
 /**
  * nombre de la funcion: Conexión a PostgreSQL (Instancia de Pool)
