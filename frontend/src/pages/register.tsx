@@ -34,7 +34,6 @@ export default function Login() {
                 nombre: name, 
                 email: email, 
                 password: password, 
-                telefono: '0414-7848740'
             }),
         });
 
