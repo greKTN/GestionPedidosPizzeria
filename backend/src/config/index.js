@@ -11,9 +11,21 @@ const app = express();
 app.use(cors()); // Permite que React se conecte
 app.use(express.json()); // Permite recibir datos en formato JSON (para el carrito)
 
-// Permite servir archivos estáticos (nuestro bucket local de imágenes)
-app.use(express.static(path.join(__dirname, '../public/images')));
+// --- ENLACE ESTÁTICO UNIVERSAL (LOCAL Y PRODUCCIÓN) ---
+const path = require('path');
 
+// __dirname siempre apunta a 'backend/src/config' (estés donde estés).
+// Subimos un nivel ('..') para salir de config, otro nivel ('..') para salir de src, 
+// y ahí entramos a 'public'.
+const publicPath = path.resolve(__dirname, '..', '..', 'public');
+
+// Servimos las imágenes bajo el prefijo /images
+app.use('/images', express.static(path.join(publicPath, 'images')));
+
+// Servimos la carpeta general como respaldo
+app.use(express.static(publicPath));
+
+console.log("📂 Buscando imágenes físicamente en:", path.join(publicPath, 'images'));
 /**
  * nombre de la funcion: Conexión a PostgreSQL (Instancia de Pool)
  * parametros: Objeto de configuración con credenciales tomadas de process.env
