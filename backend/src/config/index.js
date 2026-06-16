@@ -11,22 +11,8 @@ const app = express();
 app.use(cors()); // Permite que React se conecte
 app.use(express.json()); // Permite recibir datos en formato JSON (para el carrito)
 
-// --- CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS PARA RAILWAY ---
-
-// --- RUTA ESTÁTICA ABSOLUTA PARA MONORREPO EN RAILWAY ---
-const path = require('path');
-
-// process.cwd() nos da la raíz (/app). Le sumamos 'backend' y 'public'
-const publicPath = path.join(process.cwd(), 'backend', 'public');
-
-// Servimos las imágenes bajo el prefijo /images
-app.use('/images', express.static(path.join(publicPath, 'images')));
-
-// Servimos la carpeta general
-app.use(express.static(publicPath));
-
-// Esto te imprimirá la ruta real en los logs para confirmar que apunte a /app/backend/public
-console.log("Ruta estática apuntando a:", publicPath);
+// Permite servir archivos estáticos (nuestro bucket local de imágenes)
+app.use(express.static(path.join(__dirname, '../public/images')));
 
 /**
  * nombre de la funcion: Conexión a PostgreSQL (Instancia de Pool)
@@ -235,9 +221,7 @@ app.post('/api/pedidos', async (req, res) => {
  * retorno: void.
  * funcionalidad: Abre el puerto especificado en las variables de entorno (o el 3000 por defecto) para empezar a escuchar peticiones HTTP entrantes, mostrando un mensaje de confirmación en la consola.
  */
-// --- INICIALIZACIÓN DEL SERVIDOR ---
 const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Servidor corriendo exitosamente en el puerto ${PORT}`);
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
