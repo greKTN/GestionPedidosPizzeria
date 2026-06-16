@@ -10,9 +10,10 @@ const app = express();
 // Middlewares
 app.use(cors()); // Permite que React se conecte
 app.use(express.json()); // Permite recibir datos en formato JSON (para el carrito)
+
 // --- CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS PARA RAILWAY ---
-// Creamos una ruta absoluta subiendo dos niveles desde src/config/ hasta la raíz de backend/public
-const publicPath = path.resolve(__dirname, '..', '..', 'public');
+// Creamos una ruta absoluta subiendo un nivel desde src/config/ hasta la raíz de backend/public
+const publicPath = path.resolve(__dirname, '..', 'public');
 
 // Servimos explícitamente la subcarpeta de imágenes bajo el prefijo /images
 app.use('/images', express.static(path.join(publicPath, 'images')));
