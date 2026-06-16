@@ -51,7 +51,7 @@ function PizzaCard({pizza}: {pizza: MenuProps}){
         <div className="rounded-3xl p-5 bg-white shadow-xl h-full flex flex-col justify-between border border-slate-100 transition-all hover:shadow-2xl">
             <div>
                 <img 
-                    src={`{API_URL}${pizza.imagen_url}`} 
+                    src={`${API_URL}${pizza.imagen_url}`} 
                     className="w-full h-40 object-cover rounded-2xl mb-4" 
                     alt={pizza.nombre}
                 />

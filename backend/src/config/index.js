@@ -229,7 +229,9 @@ app.post('/api/pedidos', async (req, res) => {
  * retorno: void.
  * funcionalidad: Abre el puerto especificado en las variables de entorno (o el 3000 por defecto) para empezar a escuchar peticiones HTTP entrantes, mostrando un mensaje de confirmación en la consola.
  */
+// --- INICIALIZACIÓN DEL SERVIDOR ---
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Servidor corriendo exitosamente en el puerto ${PORT}`);
 });
